@@ -1,5 +1,5 @@
 # PDF-Tool
 
-Folgende Funktionen sind bereits nutzbar:
-  - Zusammenfügen von 2 oder mehreren PDFs in eine PDF
-  - Löschen von einzelnen Seiten aus einer PDF
+The following functions can already be used:
+  - Merge 2 or more PDFs into one PDF
+  - Delete individual pages from a PDF
