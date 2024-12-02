@@ -13,6 +13,7 @@ The following functions can already be used:
 
 Coming:
 
+- editing PDFs
 - Protect PDFs with passwords
 - Rotate PDF pages
 
