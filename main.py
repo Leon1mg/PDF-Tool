@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 import fitz # PyMuPDF
 import os
 import win32com.client
+from PyPDF2 import PdfReader, PdfWriter
 
 
 
@@ -36,9 +37,12 @@ def open_startpage():
     # Bilder (nutze eigene Bilder, z.B. "merge.png", "delete.png", "convert.png")
     img_merge = ImageTk.PhotoImage(Image.open("kombinieren.png").resize((150, 220)))
     img_delete = ImageTk.PhotoImage(Image.open("löschen.png").resize((150, 220)))
-    img_convert = ImageTk.PhotoImage(Image.open("Converter.png").resize((170, 220)))
+    img_crypt = ImageTk.PhotoImage(Image.open("Verschlüsselung.png").resize((170, 220)))
+    img_convert = ImageTk.PhotoImage(Image.open("Converter.png").resize((185, 220)))
 
-    # PDF zusammenfügen
+
+
+
     merge_frame = tk.Frame(options_frame)
     merge_frame.pack(side=tk.LEFT, padx=20)
 
@@ -49,7 +53,7 @@ def open_startpage():
     btn_merge = tk.Button(merge_frame, text="PDFs zusammenfügen", command=open_pdf_merge, width=20, font=("Arial", 14, "bold"))
     btn_merge.pack(pady=10)
 
-    # PDF-Seiten löschen
+
     delete_frame = tk.Frame(options_frame)
     delete_frame.pack(side=tk.LEFT, padx=20)
 
@@ -60,7 +64,18 @@ def open_startpage():
     btn_delete = tk.Button(delete_frame, text="PDF-Seiten löschen", command=open_pdf_delete_pages, width=20, font=("Arial", 14, "bold"))
     btn_delete.pack(pady=10)
 
-    # Konverter
+
+    encrypt_frame = tk.Frame(options_frame)
+    encrypt_frame.pack(side=tk.LEFT, padx=20)
+
+    encrypt_image_label = tk.Label(encrypt_frame, image=img_crypt)
+    encrypt_image_label.image = img_crypt  # Verhindere Garbage Collection
+    encrypt_image_label.pack()
+
+    btn_encrypt = tk.Button(encrypt_frame, text="PDF verschlüsseln", command=open_pdf_encrypt, width=20, font=("Arial", 14, "bold"))
+    btn_encrypt.pack(pady=10)
+
+
     convert_frame = tk.Frame(options_frame)
     convert_frame.pack(side=tk.LEFT, padx=20)
 
@@ -70,6 +85,10 @@ def open_startpage():
 
     btn_converter = tk.Button(convert_frame, text="Konverter", command=open_pdf_converter, width=20, font=("Arial", 14, "bold"))
     btn_converter.pack(pady=10)
+
+
+
+
 
 
 def open_pdf_merge():
@@ -144,7 +163,7 @@ def open_pdf_merge():
         root.attributes("-fullscreen", False)
 
     def about():
-        messagebox.showinfo("Help", "You can find detailed instructions on Github at:")
+        messagebox.showinfo("Help", "You can find detailed instructions on Github at: \n Github.com/leon1mg/PDF-Tool ")
 
     menubar = tk.Menu(root)
 
@@ -278,7 +297,122 @@ def open_pdf_delete_pages():
         root.attributes("-fullscreen", False)
 
     def about():
-        messagebox.showinfo("Help", "You can find detailed instructions on Github at: ")
+        messagebox.showinfo("Help", "You can find detailed instructions on Github at: \n Github.com/leon1mg/PDF-Tool")
+
+    menubar = tk.Menu(root)
+
+    file_menu = tk.Menu(menubar, tearoff=0)
+    file_menu.add_command(label="Beenden", command=root.quit)
+    menubar.add_cascade(label="File", menu=file_menu)
+
+    view_menu = tk.Menu(menubar, tearoff=0)
+    view_menu.add_command(label="Full screen", command=toggle_fullscreen)
+    view_menu.add_command(label="Window mode", command=toggle_window_mode)
+    menubar.add_cascade(label="View", menu=view_menu)
+
+    help_menu = tk.Menu(menubar, tearoff=0)
+    help_menu.add_command(label="About", command=about)
+    menubar.add_cascade(label="Help", menu=help_menu)
+
+    root.config(menu=menubar)
+    # Menüleiste Ende -------------------------------------------
+
+
+def open_pdf_encrypt():
+    for widget in root.winfo_children():
+        widget.destroy()
+
+    def encrypt_pdf():
+        input_file = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
+        if not input_file:
+            return
+
+        output_file = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF Files", "*.pdf")])
+        if not output_file:
+            return
+
+        password = password_entry.get()
+        if not password:
+            messagebox.showwarning("Fehler", "Bitte ein Passwort eingeben!")
+            return
+
+        try:
+            writer = PdfWriter()
+            reader = PdfReader(input_file)
+
+            # Inhalte in den Writer kopieren
+            for page in reader.pages:
+                writer.add_page(page)
+
+            # Passwort setzen
+            writer.encrypt(password)
+            with open(output_file, "wb") as f:
+                writer.write(f)
+
+            messagebox.showinfo("Erfolg", f"PDF erfolgreich verschlüsselt und gespeichert unter: {output_file}")
+        except Exception as e:
+            messagebox.showerror("Fehler", f"Ein Fehler ist aufgetreten: {e}")
+
+    def decrypt_pdf():
+        input_file = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
+        if not input_file:
+            return
+
+        output_file = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF Files", "*.pdf")])
+        if not output_file:
+            return
+
+        password = password_entry.get()
+        if not password:
+            messagebox.showwarning("Fehler", "Bitte ein Passwort eingeben!")
+            return
+
+        try:
+            reader = PdfReader(input_file)
+            if reader.is_encrypted:
+                reader.decrypt(password)
+            else:
+                messagebox.showwarning("Warnung", "Diese PDF ist nicht passwortgeschützt.")
+                return
+
+            writer = PdfWriter()
+            for page in reader.pages:
+                writer.add_page(page)
+
+            with open(output_file, "wb") as f:
+                writer.write(f)
+
+            messagebox.showinfo("Erfolg", f"PDF erfolgreich entschlüsselt und gespeichert unter: {output_file}")
+        except Exception as e:
+            messagebox.showerror("Fehler", f"Ein Fehler ist aufgetreten: {e}")
+
+    # UI
+    tk.Button(root, text="Zurück zur Startseite", command=open_startpage).pack(pady=10)
+
+    instructions = tk.Label(root, text="Wählen Sie eine PDF aus, um sie zu verschlüsseln oder zu entschlüsseln.", font=("Arial", 14))
+    instructions.pack(pady=20)
+
+    password_label = tk.Label(root, text="Passwort:")
+    password_label.pack(pady=5)
+    password_entry = tk.Entry(root, width=30, show="*")
+    password_entry.pack(pady=5)
+
+    encrypt_btn = tk.Button(root, text="PDF verschlüsseln", command=encrypt_pdf)
+    encrypt_btn.pack(pady=10)
+
+    decrypt_btn = tk.Button(root, text="PDF entschlüsseln", command=decrypt_pdf)
+    decrypt_btn.pack(pady=10)
+
+    # Menüleiste Start -----------------------------------------
+    def toggle_fullscreen():
+        is_fullscreen = root.attributes("-fullscreen")
+        root.attributes("-fullscreen", not is_fullscreen)
+
+    def toggle_window_mode():
+        root.attributes("-fullscreen", False)
+
+    def about():
+        messagebox.showinfo("Help", "You can find detailed instructions on Github at: \n Github.com/leon1mg/PDF-Tool")
 
     menubar = tk.Menu(root)
 
@@ -370,7 +504,7 @@ def open_pdf_converter():
         root.attributes("-fullscreen", False)
 
     def about():
-        messagebox.showinfo("Help", "You can find detailed instructions on Github at: ")
+        messagebox.showinfo("Help", "You can find detailed instructions on Github at: \n Github.com/leon1mg/PDF-Tool ")
 
     menubar = tk.Menu(root)
 
@@ -389,6 +523,8 @@ def open_pdf_converter():
 
     root.config(menu=menubar)
     # Menüleiste Ende -------------------------------------------
+
+
 
 
 # Starte die Anwendung
