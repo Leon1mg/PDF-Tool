@@ -1,7 +1,10 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
-import fitz  # PyMuPDF
+import fitz # PyMuPDF
+import os
+import win32com.client
+
 
 
 # Hauptfenster erstellen
@@ -9,12 +12,12 @@ root = tk.Tk()
 root.title("PDF-Tool")
 root.state('zoomed')
 root.state('zoomed')
-root.iconbitmap("icon.ico")
+# root.iconbitmap("icon.ico")
 
 # Globale Variablen
 pdf_document = None
 current_page = 0
-zoom_level = 2  # Standardzoom für die Vorschau
+zoom_level = 2 # Standardzoom für die Vorschau
 
 
 # Funktion für die Startseite
@@ -22,15 +25,144 @@ def open_startpage():
     for widget in root.winfo_children():
         widget.destroy()
 
-    title_label = tk.Label(root, text="Willkommen im PDF-Tool!", font=("Arial", 50, "bold"), pady=100)
-    title_label.pack(pady=20)
+    # Titel
+    title_label = tk.Label(root, text="Willkommen im PDF-Tool!", font=("Arial", 65, "bold"), pady=50)
+    title_label.pack(pady=60)
 
-    btn_merge = tk.Button(root, text="PDF zusammenfügen", command=open_pdf_merge, width=20, font=("Arial", 14, "bold"))
+    # Optionen in einem horizontalen Frame
+    options_frame = tk.Frame(root)
+    options_frame.pack(pady=150)
+
+    # Bilder (nutze eigene Bilder, z.B. "merge.png", "delete.png", "convert.png")
+    img_merge = ImageTk.PhotoImage(Image.open("kombinieren.png").resize((150, 220)))
+    img_delete = ImageTk.PhotoImage(Image.open("löschen.png").resize((150, 220)))
+    img_convert = ImageTk.PhotoImage(Image.open("Converter.png").resize((170, 220)))
+
+    # PDF zusammenfügen
+    merge_frame = tk.Frame(options_frame)
+    merge_frame.pack(side=tk.LEFT, padx=20)
+
+    merge_image_label = tk.Label(merge_frame, image=img_merge)
+    merge_image_label.image = img_merge  # Verhindere Garbage Collection
+    merge_image_label.pack()
+
+    btn_merge = tk.Button(merge_frame, text="PDFs zusammenfügen", command=open_pdf_merge, width=20, font=("Arial", 14, "bold"))
     btn_merge.pack(pady=10)
 
-    btn_delete = tk.Button(root, text="PDF-Seiten löschen", command=open_pdf_delete_pages, width=20, font=("Arial", 14, "bold"))
+    # PDF-Seiten löschen
+    delete_frame = tk.Frame(options_frame)
+    delete_frame.pack(side=tk.LEFT, padx=20)
+
+    delete_image_label = tk.Label(delete_frame, image=img_delete)
+    delete_image_label.image = img_delete  # Verhindere Garbage Collection
+    delete_image_label.pack()
+
+    btn_delete = tk.Button(delete_frame, text="PDF-Seiten löschen", command=open_pdf_delete_pages, width=20, font=("Arial", 14, "bold"))
     btn_delete.pack(pady=10)
 
+    # Konverter
+    convert_frame = tk.Frame(options_frame)
+    convert_frame.pack(side=tk.LEFT, padx=20)
+
+    convert_image_label = tk.Label(convert_frame, image=img_convert)
+    convert_image_label.image = img_convert  # Verhindere Garbage Collection
+    convert_image_label.pack()
+
+    btn_converter = tk.Button(convert_frame, text="Konverter", command=open_pdf_converter, width=20, font=("Arial", 14, "bold"))
+    btn_converter.pack(pady=10)
+
+
+def open_pdf_merge():
+    for widget in root.winfo_children():
+        widget.destroy()
+
+    pdf_files = []
+
+    def add_files():
+        files = filedialog.askopenfilenames(filetypes=[("PDF Files", "*.pdf")])
+        if files:
+            pdf_files.extend(files)
+            update_file_list()
+
+    def update_file_list():
+        file_list.delete(0, tk.END)
+        for file in pdf_files:
+            file_list.insert(tk.END, file)
+
+    def merge_pdfs():
+        if len(pdf_files) < 2:
+            messagebox.showwarning("Warning", "At least 2 PDF files are required.")
+            return
+
+        save_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
+        if not save_path:
+            return
+
+        try:
+            merger = PdfMerger()
+            for pdf in pdf_files:
+                merger.append(pdf)
+            merger.write(save_path)
+            merger.close()
+            messagebox.showinfo("Success", f"Successfully saved under: {save_path}")
+        except Exception as e:
+            messagebox.showerror("Error", f"An error occurred: {e}")
+
+    def clear_files():
+        pdf_files.clear()
+        update_file_list()
+
+    back_btn = tk.Button(root, text="Zurück zur Startseite", command=open_startpage)
+    back_btn.pack(pady=10)
+
+    frame = tk.Frame(root)
+    frame.pack(pady=10)
+
+    file_list = tk.Listbox(frame, width=50, height=10)
+    file_list.pack(side=tk.LEFT, padx=5)
+
+    scrollbar = tk.Scrollbar(frame, orient=tk.VERTICAL, command=file_list.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    file_list.config(yscrollcommand=scrollbar.set)
+
+    btn_add = tk.Button(root, text="PDFs hinzufügen", command=add_files)
+    btn_add.pack(pady=5)
+
+    btn_merge = tk.Button(root, text="PDFs zusammenfügen", command=merge_pdfs)
+    btn_merge.pack(pady=5)
+
+    btn_clear = tk.Button(root, text="Liste leeren", command=clear_files)
+    btn_clear.pack(pady=5)
+
+    # Menüleiste Start -----------------------------------------
+    def toggle_fullscreen():
+        is_fullscreen = root.attributes("-fullscreen")
+        root.attributes("-fullscreen", not is_fullscreen)
+
+    def toggle_window_mode():
+        root.attributes("-fullscreen", False)
+
+    def about():
+        messagebox.showinfo("Help", "You can find detailed instructions on Github at:")
+
+    menubar = tk.Menu(root)
+
+    file_menu = tk.Menu(menubar, tearoff=0)
+    file_menu.add_command(label="Beenden", command=root.quit)
+    menubar.add_cascade(label="File", menu=file_menu)
+
+    view_menu = tk.Menu(menubar, tearoff=0)
+    view_menu.add_command(label="Full screen", command=toggle_fullscreen)
+    view_menu.add_command(label="Window mode", command=toggle_window_mode)
+    menubar.add_cascade(label="View", menu=view_menu)
+
+    help_menu = tk.Menu(menubar, tearoff=0)
+    help_menu.add_command(label="About", command=about)
+    menubar.add_cascade(label="Help", menu=help_menu)
+
+    root.config(menu=menubar)
+    # Menüleiste Ende -------------------------------------------
 
 def open_pdf_delete_pages():
     for widget in root.winfo_children():
@@ -60,12 +192,12 @@ def open_pdf_delete_pages():
 
 
         page = pdf_document.load_page(current_page)
-        pix = page.get_pixmap(matrix=fitz.Matrix(zoom_level, zoom_level))  # Zoom anwenden
+        pix = page.get_pixmap(matrix=fitz.Matrix(zoom_level, zoom_level)) # Zoom anwenden
         img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
         img_tk = ImageTk.PhotoImage(img)
 
         canvas.create_image(0, 0, anchor=tk.NW, image=img_tk)
-        canvas.image = img_tk  # Verhindert Garbage Collection des Bildes
+        canvas.image = img_tk # Verhindert Garbage Collection des Bildes
 
         canvas.config(scrollregion=canvas.bbox("all"))
 
@@ -167,68 +299,67 @@ def open_pdf_delete_pages():
     # Menüleiste Ende -------------------------------------------
 
 
-def open_pdf_merge():
+def open_pdf_converter():
     for widget in root.winfo_children():
         widget.destroy()
 
-    pdf_files = []
-
-    def add_files():
-        files = filedialog.askopenfilenames(filetypes=[("PDF Files", "*.pdf")])
-        if files:
-            pdf_files.extend(files)
-            update_file_list()
-
-    def update_file_list():
-        file_list.delete(0, tk.END)
-        for file in pdf_files:
-            file_list.insert(tk.END, file)
-
-    def merge_pdfs():
-        if len(pdf_files) < 2:
-            messagebox.showwarning("Warning", "At least 2 PDF files are required.")
+    def convert_file():
+        input_file = filedialog.askopenfilename(filetypes=[
+            ("Alle unterstützten Dateien", "*.doc;*.docx;*.xls;*.xlsx;*.ppt;*.pptx;*.png;*.jpeg;*.jpg"),
+            ("Word Dateien", "*.doc;*.docx"),
+            ("Excel Dateien", "*.xls;*.xlsx"),
+            ("PowerPoint Dateien", "*.ppt;*.pptx"),
+            ("Bilder", "*.png;*.jpeg;*.jpg")
+        ])
+        if not input_file:
             return
 
-        save_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
-        if not save_path:
+        output_file = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
+        if not output_file:
             return
 
         try:
-            merger = PdfMerger()
-            for pdf in pdf_files:
-                merger.append(pdf)
-            merger.write(save_path)
-            merger.close()
-            messagebox.showinfo("Success", f"Successfully saved under: {save_path}")
+            ext = os.path.splitext(input_file)[1].lower()
+            if ext in ['.doc', '.docx']:
+                word = CreateObject("Word.Application")
+                doc = word.Documents.Open(input_file)
+                doc.SaveAs(output_file, FileFormat=17)  # 17 = wdFormatPDF
+                doc.Close()
+                word.Quit()
+            elif ext in ['.xls', '.xlsx']:
+                excel = CreateObject("Excel.Application")
+                wb = excel.Workbooks.Open(input_file)
+                wb.ExportAsFixedFormat(0, output_file)  # 0 = xlTypePDF
+                wb.Close()
+                excel.Quit()
+            elif ext in ['.ppt', '.pptx']:
+                powerpoint = CreateObject("PowerPoint.Application")
+                ppt = powerpoint.Presentations.Open(input_file)
+                ppt.SaveAs(output_file, 32)  # 32 = ppSaveAsPDF
+                ppt.Close()
+                powerpoint.Quit()
+            elif ext in ['.png', '.jpeg', '.jpg']:
+                image = Image.open(input_file)
+                if image.mode in ("RGBA", "LA"):
+                    image = image.convert("RGB")
+                image.save(output_file, "PDF", resolution=100.0)
+            else:
+                raise ValueError(f"Das Format {ext} wird nicht unterstützt.")
+            messagebox.showinfo("Erfolg", f"Datei erfolgreich konvertiert und unter {output_file} gespeichert.")
         except Exception as e:
-            messagebox.showerror("Error", f"An error occurred: {e}")
-
-    def clear_files():
-        pdf_files.clear()
-        update_file_list()
+            messagebox.showerror("Fehler", f"Ein Fehler ist aufgetreten: {e}")
 
     back_btn = tk.Button(root, text="Zurück zur Startseite", command=open_startpage)
     back_btn.pack(pady=10)
 
-    frame = tk.Frame(root)
-    frame.pack(pady=10)
+    instructions = tk.Label(root, text="Wählen Sie eine Datei, um sie in PDF zu konvertieren.", font=("Arial", 14))
+    instructions.pack(pady=20)
+    instructions = tk.Label(root, text="Zur Auswahl stehen: doc, docx, xls, xlsx, ppt, pptx, png, jpg, jpeg --> PDF", font=("Arial", 14))
+    instructions.pack(pady=20)
 
-    file_list = tk.Listbox(frame, width=50, height=10)
-    file_list.pack(side=tk.LEFT, padx=5)
 
-    scrollbar = tk.Scrollbar(frame, orient=tk.VERTICAL, command=file_list.yview)
-    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-
-    file_list.config(yscrollcommand=scrollbar.set)
-
-    btn_add = tk.Button(root, text="PDFs hinzufügen", command=add_files)
-    btn_add.pack(pady=5)
-
-    btn_merge = tk.Button(root, text="PDFs zusammenfügen", command=merge_pdfs)
-    btn_merge.pack(pady=5)
-
-    btn_clear = tk.Button(root, text="Liste leeren", command=clear_files)
-    btn_clear.pack(pady=5)
+    convert_btn = tk.Button(root, text="Datei auswählen und konvertieren", command=convert_file, font=("Arial", 12))
+    convert_btn.pack(pady=10)
 
     # Menüleiste Start -----------------------------------------
     def toggle_fullscreen():
@@ -239,7 +370,7 @@ def open_pdf_merge():
         root.attributes("-fullscreen", False)
 
     def about():
-        messagebox.showinfo("Help", "You can find detailed instructions on Github at:")
+        messagebox.showinfo("Help", "You can find detailed instructions on Github at: ")
 
     menubar = tk.Menu(root)
 
@@ -260,8 +391,7 @@ def open_pdf_merge():
     # Menüleiste Ende -------------------------------------------
 
 
-
-
 # Starte die Anwendung
 open_startpage()
 root.mainloop()
+
