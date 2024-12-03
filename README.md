@@ -4,6 +4,7 @@ The following functions can already be used:
 
   - Merge 2 or more PDFs into one PDF
   - Delete individual pages from a PDF
+  - Protect PDFs with passwords
   - Conversions:
     - .doc, .docx to PDF
     - .xls, .xlsx to PDF
@@ -14,7 +15,6 @@ The following functions can already be used:
 Coming:
 
 - editing PDFs
-- Protect PDFs with passwords
 - Rotate PDF pages
 
 
