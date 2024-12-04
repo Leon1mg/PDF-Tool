@@ -15,6 +15,7 @@ The following functions can already be used:
 Coming:
 
 - editing PDFs
-- Rotate PDF pages 
+- Rotate PDF pages
+- Dark Mode
 
 
