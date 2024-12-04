@@ -1,9 +1,9 @@
 # PDF-Tool
 
 **Installation Guide:**
-  - Download the files and place them in a folder.
-  - Then, run the `Python_Packages.bat` to install all the packages.
-  - Now you can run `main.py`.
+  - Download the files and place them in a folder (also the Images Folder)
+  - Then, run the `Python_Packages.bat` to install all the packages
+  - Now you can run `main.py`
   - Enjoy using the tool!
   
 
