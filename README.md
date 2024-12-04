@@ -1,7 +1,12 @@
 # PDF-Tool
 
-The following functions can already be used:
+- Download the files and place them in a folder.
+- Then, run the `Python_Packages.bat` to install all the packages.
+- Now you can run `main.py`.
+- Enjoy using the tool!
+- 
 
+Functions:
   - Merge 2 or more PDFs into one PDF
   - Delete individual pages from a PDF
   - Protect PDFs with passwords
@@ -11,7 +16,6 @@ The following functions can already be used:
     - .ppt, .pptx to PDF
     - .png, .jpeg to PDF
     
-
 Coming:
 
 - editing PDFs
