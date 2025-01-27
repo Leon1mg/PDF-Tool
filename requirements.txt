@@ -1,0 +1,6 @@
+pip
+tkinter
+PIL #pillow
+fitz #PyMuPDF
+win32.com #pywin32
+PyPDF2
