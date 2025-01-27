@@ -3,44 +3,67 @@ from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
 import fitz # PyMuPDF
 import os
-import win32com.client
+from win32com.client import Dispatch as CreateObject #pywin32
 from PyPDF2 import PdfReader, PdfWriter
+from PyPDF2 import PdfMerger
 
 
 
-# Hauptfenster erstellen
 root = tk.Tk()
 root.title("PDF-Tool")
 root.state('zoomed')
-root.state('zoomed')
-# root.iconbitmap("icon.ico")
+root.iconbitmap("Images/icon.ico")
 
-# Globale Variablen
 pdf_document = None
 current_page = 0
-zoom_level = 2 # Standardzoom für die Vorschau
+zoom_level = 2
+
+def create_menuleiste(root):
+    # Menüleiste Start -----------------------------------------
+    def toggle_fullscreen():
+        is_fullscreen = root.attributes("-fullscreen")
+        root.attributes("-fullscreen", not is_fullscreen)
+
+    def toggle_window_mode():
+        root.attributes("-fullscreen", False)
+
+    def about():
+        messagebox.showinfo("Help", "You can find detailed instructions on Github at: \n Github.com/leon1mg/PDF-Tool")
+
+    menubar = tk.Menu(root)
+
+    file_menu = tk.Menu(menubar, tearoff=0)
+    file_menu.add_command(label="Beenden", command=root.quit)
+    menubar.add_cascade(label="File", menu=file_menu)
+
+    view_menu = tk.Menu(menubar, tearoff=0)
+    view_menu.add_command(label="Full screen", command=toggle_fullscreen)
+    view_menu.add_command(label="Window mode", command=toggle_window_mode)
+    menubar.add_cascade(label="View", menu=view_menu)
+
+    help_menu = tk.Menu(menubar, tearoff=0)
+    help_menu.add_command(label="About", command=about)
+    menubar.add_cascade(label="Help", menu=help_menu)
+
+    root.config(menu=menubar)
+    # Menüleiste Ende -------------------------------------------
 
 
-# Funktion für die Startseite
+
 def open_startpage():
     for widget in root.winfo_children():
         widget.destroy()
 
-    # Titel
     title_label = tk.Label(root, text="Willkommen im PDF-Tool!", font=("Arial", 65, "bold"), pady=50)
     title_label.pack(pady=60)
 
-    # Optionen in einem horizontalen Frame
     options_frame = tk.Frame(root)
     options_frame.pack(pady=150)
 
-    # Bilder (nutze eigene Bilder, z.B. "merge.png", "delete.png", "convert.png")
-    img_merge = ImageTk.PhotoImage(Image.open("kombinieren.png").resize((150, 220)))
-    img_delete = ImageTk.PhotoImage(Image.open("löschen.png").resize((150, 220)))
-    img_crypt = ImageTk.PhotoImage(Image.open("Verschlüsselung.png").resize((170, 220)))
-    img_convert = ImageTk.PhotoImage(Image.open("Converter.png").resize((185, 220)))
-
-
+    img_merge = ImageTk.PhotoImage(Image.open("Images/kombinieren.png").resize((150, 220)))
+    img_delete = ImageTk.PhotoImage(Image.open("Images/löschen.png").resize((150, 220)))
+    img_crypt = ImageTk.PhotoImage(Image.open("Images/Verschlüsselung.png").resize((170, 220)))
+    img_convert = ImageTk.PhotoImage(Image.open("Images/Converter.png").resize((185, 220)))
 
 
     merge_frame = tk.Frame(options_frame)
@@ -85,6 +108,8 @@ def open_startpage():
 
     btn_converter = tk.Button(convert_frame, text="Konverter", command=open_pdf_converter, width=20, font=("Arial", 14, "bold"))
     btn_converter.pack(pady=10)
+
+    create_menuleiste(root)
 
 
 
@@ -154,35 +179,7 @@ def open_pdf_merge():
     btn_clear = tk.Button(root, text="Liste leeren", command=clear_files)
     btn_clear.pack(pady=5)
 
-    # Menüleiste Start -----------------------------------------
-    def toggle_fullscreen():
-        is_fullscreen = root.attributes("-fullscreen")
-        root.attributes("-fullscreen", not is_fullscreen)
-
-    def toggle_window_mode():
-        root.attributes("-fullscreen", False)
-
-    def about():
-        messagebox.showinfo("Help", "You can find detailed instructions on Github at: \n Github.com/leon1mg/PDF-Tool ")
-
-    menubar = tk.Menu(root)
-
-    file_menu = tk.Menu(menubar, tearoff=0)
-    file_menu.add_command(label="Beenden", command=root.quit)
-    menubar.add_cascade(label="File", menu=file_menu)
-
-    view_menu = tk.Menu(menubar, tearoff=0)
-    view_menu.add_command(label="Full screen", command=toggle_fullscreen)
-    view_menu.add_command(label="Window mode", command=toggle_window_mode)
-    menubar.add_cascade(label="View", menu=view_menu)
-
-    help_menu = tk.Menu(menubar, tearoff=0)
-    help_menu.add_command(label="About", command=about)
-    menubar.add_cascade(label="Help", menu=help_menu)
-
-    root.config(menu=menubar)
-    # Menüleiste Ende -------------------------------------------
-
+    create_menuleiste(root)
 def open_pdf_delete_pages():
     for widget in root.winfo_children():
         widget.destroy()
@@ -288,34 +285,7 @@ def open_pdf_delete_pages():
     next_button = tk.Button(nav_frame, text="Weiter", command=next_page)
     next_button.pack(side=tk.LEFT, padx=10)
 
-    # Menüleiste Start -----------------------------------------
-    def toggle_fullscreen():
-        is_fullscreen = root.attributes("-fullscreen")
-        root.attributes("-fullscreen", not is_fullscreen)
-
-    def toggle_window_mode():
-        root.attributes("-fullscreen", False)
-
-    def about():
-        messagebox.showinfo("Help", "You can find detailed instructions on Github at: \n Github.com/leon1mg/PDF-Tool")
-
-    menubar = tk.Menu(root)
-
-    file_menu = tk.Menu(menubar, tearoff=0)
-    file_menu.add_command(label="Beenden", command=root.quit)
-    menubar.add_cascade(label="File", menu=file_menu)
-
-    view_menu = tk.Menu(menubar, tearoff=0)
-    view_menu.add_command(label="Full screen", command=toggle_fullscreen)
-    view_menu.add_command(label="Window mode", command=toggle_window_mode)
-    menubar.add_cascade(label="View", menu=view_menu)
-
-    help_menu = tk.Menu(menubar, tearoff=0)
-    help_menu.add_command(label="About", command=about)
-    menubar.add_cascade(label="Help", menu=help_menu)
-
-    root.config(menu=menubar)
-    # Menüleiste Ende -------------------------------------------
+    create_menuleiste(root)
 
 
 def open_pdf_encrypt():
@@ -403,34 +373,7 @@ def open_pdf_encrypt():
     decrypt_btn = tk.Button(root, text="PDF entschlüsseln", command=decrypt_pdf)
     decrypt_btn.pack(pady=10)
 
-    # Menüleiste Start -----------------------------------------
-    def toggle_fullscreen():
-        is_fullscreen = root.attributes("-fullscreen")
-        root.attributes("-fullscreen", not is_fullscreen)
-
-    def toggle_window_mode():
-        root.attributes("-fullscreen", False)
-
-    def about():
-        messagebox.showinfo("Help", "You can find detailed instructions on Github at: \n Github.com/leon1mg/PDF-Tool")
-
-    menubar = tk.Menu(root)
-
-    file_menu = tk.Menu(menubar, tearoff=0)
-    file_menu.add_command(label="Beenden", command=root.quit)
-    menubar.add_cascade(label="File", menu=file_menu)
-
-    view_menu = tk.Menu(menubar, tearoff=0)
-    view_menu.add_command(label="Full screen", command=toggle_fullscreen)
-    view_menu.add_command(label="Window mode", command=toggle_window_mode)
-    menubar.add_cascade(label="View", menu=view_menu)
-
-    help_menu = tk.Menu(menubar, tearoff=0)
-    help_menu.add_command(label="About", command=about)
-    menubar.add_cascade(label="Help", menu=help_menu)
-
-    root.config(menu=menubar)
-    # Menüleiste Ende -------------------------------------------
+    create_menuleiste(root)
 
 
 def open_pdf_converter():
@@ -495,36 +438,7 @@ def open_pdf_converter():
     convert_btn = tk.Button(root, text="Datei auswählen und konvertieren", command=convert_file, font=("Arial", 12))
     convert_btn.pack(pady=10)
 
-    # Menüleiste Start -----------------------------------------
-    def toggle_fullscreen():
-        is_fullscreen = root.attributes("-fullscreen")
-        root.attributes("-fullscreen", not is_fullscreen)
-
-    def toggle_window_mode():
-        root.attributes("-fullscreen", False)
-
-    def about():
-        messagebox.showinfo("Help", "You can find detailed instructions on Github at: \n Github.com/leon1mg/PDF-Tool ")
-
-    menubar = tk.Menu(root)
-
-    file_menu = tk.Menu(menubar, tearoff=0)
-    file_menu.add_command(label="Beenden", command=root.quit)
-    menubar.add_cascade(label="File", menu=file_menu)
-
-    view_menu = tk.Menu(menubar, tearoff=0)
-    view_menu.add_command(label="Full screen", command=toggle_fullscreen)
-    view_menu.add_command(label="Window mode", command=toggle_window_mode)
-    menubar.add_cascade(label="View", menu=view_menu)
-
-    help_menu = tk.Menu(menubar, tearoff=0)
-    help_menu.add_command(label="About", command=about)
-    menubar.add_cascade(label="Help", menu=help_menu)
-
-    root.config(menu=menubar)
-    # Menüleiste Ende -------------------------------------------
-
-
+    create_menuleiste(root)
 
 
 # Starte die Anwendung
