@@ -2,7 +2,7 @@
 
 **Installation Guide:**
   - Download the files and place them in a folder (also the Images Folder)
-  - Then, run the `Python_Packages.bat` to install all the packages
+  - Then, run the `Python_Packages.bat` to install all the packages or install all reqirements by urself `requirements.txt`.
   - Now you can run `main.py`
   - Enjoy using the tool!
   
