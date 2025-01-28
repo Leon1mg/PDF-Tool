@@ -19,7 +19,6 @@
 
       
   *New:*
-
     - extract Text from PDF
     - Add Watermarks to PDF
 
