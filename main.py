@@ -19,7 +19,6 @@ current_page = 0
 zoom_level = 2
 
 def create_menuleiste(root):
-    # Menüleiste Start -----------------------------------------
     def toggle_fullscreen():
         is_fullscreen = root.attributes("-fullscreen")
         root.attributes("-fullscreen", not is_fullscreen)
@@ -46,8 +45,6 @@ def create_menuleiste(root):
     menubar.add_cascade(label="Help", menu=help_menu)
 
     root.config(menu=menubar)
-    # Menüleiste Ende -------------------------------------------
-
 
 
 def open_startpage():
@@ -64,15 +61,15 @@ def open_startpage():
     img_delete = ImageTk.PhotoImage(Image.open("Images/löschen.png").resize((150, 220)))
     img_crypt = ImageTk.PhotoImage(Image.open("Images/Verschlüsselung.png").resize((170, 220)))
     img_convert = ImageTk.PhotoImage(Image.open("Images/Converter.png").resize((185, 220)))
-    img_extract = ImageTk.PhotoImage(Image.open("Images/extract.png").resize((150, 220)))
-    img_watermark = ImageTk.PhotoImage(Image.open("Images/watermark.png").resize((150, 220)))
+    img_extract = ImageTk.PhotoImage(Image.open("Images/extract.png").resize((230, 220)))
+    img_watermark = ImageTk.PhotoImage(Image.open("Images/watermark.png").resize((220, 220)))
 
 
     merge_frame = tk.Frame(options_frame)
     merge_frame.pack(side=tk.LEFT, padx=20)
 
     merge_image_label = tk.Label(merge_frame, image=img_merge)
-    merge_image_label.image = img_merge  # Verhindere Garbage Collection
+    merge_image_label.image = img_merge
     merge_image_label.pack()
 
     btn_merge = tk.Button(merge_frame, text="PDFs zusammenfügen", command=open_pdf_merge, width=20, font=("Arial", 14, "bold"))
@@ -83,7 +80,7 @@ def open_startpage():
     delete_frame.pack(side=tk.LEFT, padx=20)
 
     delete_image_label = tk.Label(delete_frame, image=img_delete)
-    delete_image_label.image = img_delete  # Verhindere Garbage Collection
+    delete_image_label.image = img_delete
     delete_image_label.pack()
 
     btn_delete = tk.Button(delete_frame, text="PDF-Seiten löschen", command=open_pdf_delete_pages, width=20, font=("Arial", 14, "bold"))
@@ -94,7 +91,7 @@ def open_startpage():
     encrypt_frame.pack(side=tk.LEFT, padx=20)
 
     encrypt_image_label = tk.Label(encrypt_frame, image=img_crypt)
-    encrypt_image_label.image = img_crypt  # Verhindere Garbage Collection
+    encrypt_image_label.image = img_crypt
     encrypt_image_label.pack()
 
     btn_encrypt = tk.Button(encrypt_frame, text="PDF verschlüsseln", command=open_pdf_encrypt, width=20, font=("Arial", 14, "bold"))
@@ -105,7 +102,7 @@ def open_startpage():
     convert_frame.pack(side=tk.LEFT, padx=20)
 
     convert_image_label = tk.Label(convert_frame, image=img_convert)
-    convert_image_label.image = img_convert  # Verhindere Garbage Collection
+    convert_image_label.image = img_convert
     convert_image_label.pack()
 
     btn_converter = tk.Button(convert_frame, text="Konverter", command=open_pdf_converter, width=20, font=("Arial", 14, "bold"))
@@ -115,7 +112,7 @@ def open_startpage():
     extract_frame.pack(side=tk.LEFT, padx=20)
 
     extract_image_label = tk.Label(extract_frame, image=img_extract)
-    extract_image_label.image = img_extract  # Verhindere Garbage Collection
+    extract_image_label.image = img_extract
     extract_image_label.pack()
 
     btn_extract = tk.Button(extract_frame, text="Text extrahieren", command=open_pdf_extract_text, width=20, font=("Arial", 14, "bold"))
@@ -127,15 +124,11 @@ def open_startpage():
     watermark_frame.pack(side=tk.LEFT, padx=20)
 
     watermark_image_label = tk.Label(watermark_frame, image=img_watermark)
-    watermark_image_label.image = img_watermark  # Verhindere Garbage Collection
+    watermark_image_label.image = img_watermark
     watermark_image_label.pack()
 
     btn_watermark = tk.Button(watermark_frame, text="Wasserzeichen einfügen", command=open_pdf_watermark, width=20, font=("Arial", 14, "bold"))
     btn_watermark.pack(pady=10)
-
-
-
-
 
 
 def open_pdf_merge():
@@ -332,11 +325,9 @@ def open_pdf_encrypt():
             writer = PdfWriter()
             reader = PdfReader(input_file)
 
-            # Inhalte in den Writer kopieren
             for page in reader.pages:
                 writer.add_page(page)
 
-            # Passwort setzen
             writer.encrypt(password)
             with open(output_file, "wb") as f:
                 writer.write(f)
@@ -478,8 +469,7 @@ def open_pdf_extract_text():
             for page in pdf_document:
                 extracted_text += page.get_text()
 
-            # Erstelle ein Textfeld mit einem Scrollbereich
-            text_area.delete(1.0, tk.END)  # Vorherigen Text löschen
+            text_area.delete(1.0, tk.END)
             text_area.insert(tk.END, extracted_text)
 
         except Exception as e:
@@ -494,7 +484,6 @@ def open_pdf_extract_text():
     extract_btn = tk.Button(root, text="Text extrahieren", command=extract_text)
     extract_btn.pack(pady=10)
 
-    # Textfeld mit Scrollbereich
     text_area_frame = tk.Frame(root)
     text_area_frame.pack(pady=10)
 
@@ -527,24 +516,19 @@ def open_pdf_watermark():
             return
 
         try:
-            # Öffne das PDF-Dokument
             doc = fitz.open(input_pdf)
 
-            # Iteriere durch alle Seiten und füge das Wasserzeichen hinzu
             for page in doc:
-                # Position des Wasserzeichens (Zentrum der Seite)
                 pos = fitz.Point(page.rect.width / 2, page.rect.height / 2)
 
-                # Füge Text hinzu ohne Rotation
                 page.insert_text(
-                    pos,  # Position (Mitte der Seite)
-                    watermark_text,  # Text des Wasserzeichens
-                    fontsize=50,  # Schriftgröße
-                    color=(0.7, 0.7, 0.7),  # Farbe (Hellgrau)
-                    render_mode=2  # Render-Modus für Transparenz
+                    pos,
+                    watermark_text,
+                    fontsize=50,
+                    color=(0.7, 0.7, 0.7),
+                    render_mode=2
                 )
 
-            # Speichern des neuen PDFs mit Wasserzeichen
             doc.save(output_pdf)
             messagebox.showinfo("Erfolg", f"Wasserzeichen hinzugefügt und PDF gespeichert unter: {output_pdf}")
         except Exception as e:
@@ -568,7 +552,6 @@ def open_pdf_watermark():
     create_menuleiste(root)
 
 
-# Starte die Anwendung
 open_startpage()
 root.mainloop()
 
