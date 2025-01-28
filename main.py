@@ -64,6 +64,8 @@ def open_startpage():
     img_delete = ImageTk.PhotoImage(Image.open("Images/löschen.png").resize((150, 220)))
     img_crypt = ImageTk.PhotoImage(Image.open("Images/Verschlüsselung.png").resize((170, 220)))
     img_convert = ImageTk.PhotoImage(Image.open("Images/Converter.png").resize((185, 220)))
+    img_extract = ImageTk.PhotoImage(Image.open("Images/extract.png").resize((150, 220)))
+    img_watermark = ImageTk.PhotoImage(Image.open("Images/watermark.png").resize((150, 220)))
 
 
     merge_frame = tk.Frame(options_frame)
@@ -109,7 +111,27 @@ def open_startpage():
     btn_converter = tk.Button(convert_frame, text="Konverter", command=open_pdf_converter, width=20, font=("Arial", 14, "bold"))
     btn_converter.pack(pady=10)
 
+    extract_frame = tk.Frame(options_frame)
+    extract_frame.pack(side=tk.LEFT, padx=20)
+
+    extract_image_label = tk.Label(extract_frame, image=img_extract)
+    extract_image_label.image = img_extract  # Verhindere Garbage Collection
+    extract_image_label.pack()
+
+    btn_extract = tk.Button(extract_frame, text="Text extrahieren", command=open_pdf_extract_text, width=20, font=("Arial", 14, "bold"))
+    btn_extract.pack(pady=10)
+
     create_menuleiste(root)
+
+    watermark_frame = tk.Frame(options_frame)
+    watermark_frame.pack(side=tk.LEFT, padx=20)
+
+    watermark_image_label = tk.Label(watermark_frame, image=img_watermark)
+    watermark_image_label.image = img_watermark  # Verhindere Garbage Collection
+    watermark_image_label.pack()
+
+    btn_watermark = tk.Button(watermark_frame, text="Wasserzeichen einfügen", command=open_pdf_watermark, width=20, font=("Arial", 14, "bold"))
+    btn_watermark.pack(pady=10)
 
 
 
@@ -437,6 +459,111 @@ def open_pdf_converter():
 
     convert_btn = tk.Button(root, text="Datei auswählen und konvertieren", command=convert_file, font=("Arial", 12))
     convert_btn.pack(pady=10)
+
+    create_menuleiste(root)
+
+
+def open_pdf_extract_text():
+    for widget in root.winfo_children():
+        widget.destroy()
+
+    def extract_text():
+        file_path = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
+        if not file_path:
+            return
+
+        try:
+            pdf_document = fitz.open(file_path)
+            extracted_text = ""
+            for page in pdf_document:
+                extracted_text += page.get_text()
+
+            # Erstelle ein Textfeld mit einem Scrollbereich
+            text_area.delete(1.0, tk.END)  # Vorherigen Text löschen
+            text_area.insert(tk.END, extracted_text)
+
+        except Exception as e:
+            messagebox.showerror("Fehler", f"Ein Fehler ist aufgetreten: {e}")
+
+    back_btn = tk.Button(root, text="Zurück zur Startseite", command=open_startpage)
+    back_btn.pack(pady=10)
+
+    instructions = tk.Label(root, text="Wählen Sie eine PDF aus, um den Text zu extrahieren.", font=("Arial", 14))
+    instructions.pack(pady=20)
+
+    extract_btn = tk.Button(root, text="Text extrahieren", command=extract_text)
+    extract_btn.pack(pady=10)
+
+    # Textfeld mit Scrollbereich
+    text_area_frame = tk.Frame(root)
+    text_area_frame.pack(pady=10)
+
+    text_area = tk.Text(text_area_frame, width=100, height=20)
+    text_area.pack(side=tk.LEFT)
+
+    scrollbar = tk.Scrollbar(text_area_frame, orient=tk.VERTICAL, command=text_area.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    text_area.config(yscrollcommand=scrollbar.set)
+
+    create_menuleiste(root)
+
+def open_pdf_watermark():
+    for widget in root.winfo_children():
+        widget.destroy()
+
+    def add_watermark():
+        input_pdf = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
+        if not input_pdf:
+            return
+
+        watermark_text = watermark_text_entry.get()
+        if not watermark_text:
+            messagebox.showwarning("Fehler", "Bitte ein Wasserzeichen eingeben!")
+            return
+
+        output_pdf = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF Files", "*.pdf")])
+        if not output_pdf:
+            return
+
+        try:
+            # Öffne das PDF-Dokument
+            doc = fitz.open(input_pdf)
+
+            # Iteriere durch alle Seiten und füge das Wasserzeichen hinzu
+            for page in doc:
+                # Position des Wasserzeichens (Zentrum der Seite)
+                pos = fitz.Point(page.rect.width / 2, page.rect.height / 2)
+
+                # Füge Text hinzu ohne Rotation
+                page.insert_text(
+                    pos,  # Position (Mitte der Seite)
+                    watermark_text,  # Text des Wasserzeichens
+                    fontsize=50,  # Schriftgröße
+                    color=(0.7, 0.7, 0.7),  # Farbe (Hellgrau)
+                    render_mode=2  # Render-Modus für Transparenz
+                )
+
+            # Speichern des neuen PDFs mit Wasserzeichen
+            doc.save(output_pdf)
+            messagebox.showinfo("Erfolg", f"Wasserzeichen hinzugefügt und PDF gespeichert unter: {output_pdf}")
+        except Exception as e:
+            messagebox.showerror("Fehler", f"Fehler beim Hinzufügen des Wasserzeichens: {e}")
+
+    back_btn = tk.Button(root, text="Zurück zur Startseite", command=open_startpage)
+    back_btn.pack(pady=10)
+
+    instructions = tk.Label(root, text="Geben Sie ein Wasserzeichen ein und fügen Sie es der PDF hinzu.", font=("Arial", 14))
+    instructions.pack(pady=20)
+
+    watermark_text_label = tk.Label(root, text="Wasserzeichen-Text:")
+    watermark_text_label.pack(pady=5)
+
+    watermark_text_entry = tk.Entry(root, width=40)
+    watermark_text_entry.pack(pady=5)
+
+    add_watermark_btn = tk.Button(root, text="Wasserzeichen hinzufügen", command=add_watermark)
+    add_watermark_btn.pack(pady=10)
 
     create_menuleiste(root)
 
