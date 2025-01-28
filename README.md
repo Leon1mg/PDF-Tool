@@ -15,10 +15,8 @@
     - .xls, .xlsx to PDF
     - .ppt, .pptx to PDF
     - .png, .jpeg to PDF
-  
-*New Functions:*
-  - Extract Text from PDF
-  - Add Watermarks to PDF
+    - Extract Text from PDF
+    - Add Watermarks to PDF
 
 
 
