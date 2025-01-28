@@ -1,7 +1,3 @@
-Hier ist ein Vorschlag für ein umfassendes Wiki zu deinem Python-PDF-Tool. Es deckt alle wichtigen Funktionen und Details ab, um den Benutzern das Verständnis und die Bedienung zu erleichtern:
-
----
-
 # 📚 **PDF-Tool Wiki**
 
 ## Inhaltsverzeichnis
