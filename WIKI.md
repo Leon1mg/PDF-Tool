@@ -1,173 +1,169 @@
-Hier ist der gesamte Inhalt ausschließlich im Markdown-Format:
-
-```markdown
-# PDF-Tool Dokumentation
-
-Willkommen zur Dokumentation des **PDF-Tools**. Dieses Tool wurde mit Python und Bibliotheken wie `tkinter`, `PyPDF2`, `Pillow`, `fitz (PyMuPDF)` und anderen erstellt. Es bietet eine benutzerfreundliche Oberfläche zur Bearbeitung von PDF-Dateien und anderen Dokumentformaten. Die Hauptfunktionen umfassen PDF-Zusammenführung, -Verschlüsselung, -Seitenlöschung und Dateikonvertierung.
+Hier ist ein Vorschlag für ein umfassendes Wiki zu deinem Python-PDF-Tool. Es deckt alle wichtigen Funktionen und Details ab, um den Benutzern das Verständnis und die Bedienung zu erleichtern:
 
 ---
 
+# 📚 **PDF-Tool Wiki**
+
 ## Inhaltsverzeichnis
-- [Installation](#installation)
-- [Projektstruktur](#projektstruktur)
-- [Hauptfunktionen](#hauptfunktionen)
-  - [Startseite](#startseite)
-  - [PDFs zusammenfügen](#pdfs-zusammenfügen)
-  - [PDF-Seiten löschen](#pdf-seiten-löschen)
-  - [PDF verschlüsseln und entschlüsseln](#pdf-verschlüsseln-und-entschlüsseln)
-  - [Dateien in PDF konvertieren](#dateien-in-pdf-konvertieren)
-- [Menüleiste](#menüleiste)
-- [Erweiterungsmöglichkeiten](#erweiterungsmöglichkeiten)
-- [Fehlerbehebung](#fehlerbehebung)
-- [Lizenz](#lizenz)
+
+1. [Einführung](#einführung)  
+2. [Hauptmerkmale](#hauptmerkmale)  
+3. [Installation](#installation)  
+4. [Anwendung starten](#anwendung-starten)  
+5. [Funktionen](#funktionen)  
+    - [Startseite](#startseite)  
+    - [PDFs zusammenfügen](#pdfs-zusammenfügen)  
+    - [PDF-Seiten löschen](#pdf-seiten-löschen)  
+    - [PDF verschlüsseln und entschlüsseln](#pdf-verschlüsseln-und-entschlüsseln)  
+    - [Dateikonvertierung nach PDF](#dateikonvertierung-nach-pdf)  
+6. [Fehlerbehebung](#fehlerbehebung)  
+7. [FAQs](#faqs)  
+
+---
+
+## Einführung
+
+Das **PDF-Tool** ist ein vielseitiges, benutzerfreundliches Desktop-Tool, mit dem Sie gängige Aufgaben im Umgang mit PDFs erledigen können. Die intuitive Oberfläche ermöglicht es, PDFs zu kombinieren, Seiten zu löschen, PDFs zu verschlüsseln oder zu entschlüsseln sowie Dateien in PDF zu konvertieren. 
+
+---
+
+## Hauptmerkmale
+
+- PDFs zusammenfügen: Kombinieren Sie mehrere PDFs in einer einzigen Datei.
+- Seiten löschen: Entfernen Sie gezielt Seiten aus einer PDF.
+- Verschlüsseln und Entschlüsseln: Schützen Sie PDFs mit einem Passwort oder entfernen Sie bestehende Passwörter.
+- Konvertierung: Konvertieren Sie Dateien wie Word-, Excel-, PowerPoint- und Bilddateien in PDF.
+- Einfache Navigation: Eine klar strukturierte Benutzeroberfläche mit ansprechenden Grafiken.
+- Unterstützung mehrerer Formate: Unterstützt `.doc`, `.docx`, `.xls`, `.xlsx`, `.ppt`, `.pptx`, `.png`, `.jpg` und `.jpeg`.
 
 ---
 
 ## Installation
 
 ### Voraussetzungen
-- Python 3.x
-- Folgende Python-Bibliotheken:
-  - `tkinter`
-  - `Pillow`
-  - `PyPDF2`
-  - `fitz` (PyMuPDF)
-  - `pywin32`
 
-### Schritte
-1. Klonen oder laden Sie das Projekt herunter.
-2. Installieren Sie die benötigten Bibliotheken:
+1. **Python-Version**: Python 3.7 oder höher.  
+2. **Zusätzliche Bibliotheken**:
+   - `tkinter`  
+   - `Pillow`  
+   - `PyMuPDF`  
+   - `PyPDF2`  
+   - `pywin32`  
+
+   Installieren Sie diese mit folgendem Befehl:
    ```bash
-   pip install pillow pymupdf pywin32 PyPDF2
+   pip install tk Pillow PyMuPDF PyPDF2 pywin32
    ```
-3. Platzieren Sie die Bilder für die Buttons (z. B. `kombinieren.png`, `löschen.png`, usw.) im Ordner `Images/`.
-4. Führen Sie das Skript aus:
+
+3. **Windows-Nutzer**: Stellen Sie sicher, dass Microsoft Word, Excel und PowerPoint installiert sind, um die Konvertierungsfunktion nutzen zu können.
+
+### Projektdateien
+
+1. Laden Sie die Projektdateien herunter und stellen Sie sicher, dass die folgende Ordnerstruktur vorhanden ist:
+   ```
+   PDF-Tool/
+   ├── main.py
+   ├── Images/
+   │   ├── kombinieren.png
+   │   ├── löschen.png
+   │   ├── Verschlüsselung.png
+   │   ├── Converter.png
+   │   └── icon.ico
+   ```
+
+2. Starten Sie das Tool, indem Sie den folgenden Befehl in Ihrem Terminal oder Ihrer Kommandozeile ausführen:
    ```bash
    python main.py
    ```
 
 ---
 
-## Projektstruktur
+## Anwendung starten
 
-Das Projekt besteht aus einer zentralen Datei `main.py`, die die gesamte GUI und die Funktionalität definiert. Die wichtigsten Abschnitte der Anwendung sind:
+Sobald das Tool gestartet ist, sehen Sie die Startseite mit verschiedenen Optionen:  
 
-- **Menüleiste**: Globale Navigation und Hilfsoptionen.
-- **Funktionale Seiten**: Separate Module für verschiedene Aufgaben (z. B. Zusammenfügen, Verschlüsselung).
-- **UI-Komponenten**: Tkinter-Widgets für die Benutzeroberfläche.
+- **PDFs zusammenfügen**  
+- **PDF-Seiten löschen**  
+- **PDF verschlüsseln**  
+- **Konverter**  
+
+Sie können jede Funktion über die entsprechenden Buttons aufrufen.  
 
 ---
 
-## Hauptfunktionen
+## Funktionen
 
 ### Startseite
-Die Startseite ist der zentrale Einstiegspunkt. Sie enthält große, klickbare Buttons, die zu den verschiedenen Funktionen führen:
-- PDFs zusammenfügen
-- PDF-Seiten löschen
-- PDF verschlüsseln
-- Dateien in PDF konvertieren
+
+Die Startseite dient als zentrale Navigation für die Hauptfunktionen. Von hier aus können Sie zwischen den verschiedenen Werkzeugen wechseln.  
 
 ---
 
 ### PDFs zusammenfügen
 
-#### Beschreibung
-Mit dieser Funktion können mehrere PDF-Dateien zu einer einzigen Datei kombiniert werden.
-
-#### Workflow
-1. Klicken Sie auf **PDFs zusammenfügen**.
-2. Wählen Sie die Dateien aus, die zusammengefügt werden sollen.
-3. Überprüfen Sie die Dateiliste in der GUI.
-4. Speichern Sie die kombinierte Datei über den Button **PDFs zusammenfügen**.
-
-#### Code-Details
-- Verwendet `PdfMerger` aus der Bibliothek `PyPDF2`.
-- Unterstützt mehrere Dateien.
-- Prüft, ob mindestens zwei PDFs hinzugefügt wurden, bevor der Zusammenführungsprozess beginnt.
+1. **Funktion aufrufen**: Wählen Sie `PDFs zusammenfügen` auf der Startseite.  
+2. **PDF-Dateien hinzufügen**:  
+   - Klicken Sie auf `PDFs hinzufügen`, um mehrere PDFs auszuwählen.  
+   - Die ausgewählten PDFs werden in einer Liste angezeigt.  
+3. **PDFs zusammenfügen**:  
+   - Klicken Sie auf `PDFs zusammenfügen`, wählen Sie einen Speicherort und geben Sie einen Namen für die zusammengefügte Datei ein.  
+4. **Liste leeren**: Mit dem Button `Liste leeren` können Sie die PDF-Liste zurücksetzen.  
 
 ---
 
 ### PDF-Seiten löschen
 
-#### Beschreibung
-Löscht ausgewählte Seiten aus einer PDF-Datei.
-
-#### Workflow
-1. Laden Sie eine PDF-Datei.
-2. Navigieren Sie mit den **Weiter** und **Zurück**-Buttons durch die Seiten.
-3. Geben Sie die Seitenzahlen ein, die gelöscht werden sollen (z. B. `1,3,5`).
-4. Speichern Sie die bearbeitete Datei.
-
-#### Code-Details
-- Verwendet `fitz` (PyMuPDF), um die Seiten als Vorschau anzuzeigen.
-- Löscht die Seiten basierend auf Benutzerangaben und erstellt eine neue PDF-Datei.
+1. **Funktion aufrufen**: Wählen Sie `PDF-Seiten löschen` auf der Startseite.  
+2. **PDF laden**: Klicken Sie auf `PDF laden`, um die gewünschte Datei zu öffnen.  
+3. **Seitenvorschau**:  
+   - Navigieren Sie durch die Seiten mithilfe der Buttons `Zurück` und `Weiter`.  
+   - Eine Vorschau der aktuellen Seite wird angezeigt.  
+4. **Seiten löschen**:  
+   - Geben Sie die Seitenzahlen ein, die Sie löschen möchten (z. B. `1,3,5`).  
+   - Klicken Sie auf `Seiten löschen und speichern`, um die bearbeitete PDF zu speichern.  
 
 ---
 
 ### PDF verschlüsseln und entschlüsseln
 
-#### Beschreibung
-Schützt oder entschlüsselt PDF-Dateien mit einem Passwort.
-
-#### Workflow
-1. Wählen Sie die Funktion **PDF verschlüsseln** oder **PDF entschlüsseln**.
-2. Laden Sie die Datei.
-3. Geben Sie ein Passwort ein.
-4. Speichern Sie die bearbeitete Datei.
-
-#### Code-Details
-- Verschlüsselung erfolgt über die `PdfWriter`-Klasse von `PyPDF2`.
-- Entschlüsselung überprüft, ob die PDF passwortgeschützt ist, bevor der Prozess gestartet wird.
+1. **Funktion aufrufen**: Wählen Sie `PDF verschlüsseln` auf der Startseite.  
+2. **PDF verschlüsseln**:  
+   - Wählen Sie die PDF aus, die Sie schützen möchten.  
+   - Geben Sie ein Passwort ein und klicken Sie auf `PDF verschlüsseln`.  
+3. **PDF entschlüsseln**:  
+   - Wählen Sie die PDF aus, die Sie entsperren möchten.  
+   - Geben Sie das Passwort ein und klicken Sie auf `PDF entschlüsseln`.  
 
 ---
 
-### Dateien in PDF konvertieren
+### Dateikonvertierung nach PDF
 
-#### Beschreibung
-Konvertiert gängige Dokumentformate (Word, Excel, PowerPoint, Bilder) in PDF.
-
-#### Unterstützte Formate
-- **Dokumente**: `.doc`, `.docx`
-- **Tabellen**: `.xls`, `.xlsx`
-- **Präsentationen**: `.ppt`, `.pptx`
-- **Bilder**: `.png`, `.jpeg`, `.jpg`
-
-#### Workflow
-1. Wählen Sie eine Datei aus den unterstützten Formaten aus.
-2. Speichern Sie die konvertierte PDF-Datei.
-
-#### Code-Details
-- Verwendet `pywin32`, um Office-Dokumente in PDF zu konvertieren.
-- Bilder werden mit `Pillow` verarbeitet.
-
----
-
-## Menüleiste
-
-Die Menüleiste bietet folgende Optionen:
-- **File**: Anwendung beenden.
-- **View**: Wechsel zwischen Vollbild- und Fenstermodus.
-- **Help**: Zeigt Informationen zur Anwendung und den Link zur Dokumentation.
-
----
-
-## Erweiterungsmöglichkeiten
-
-- **Zusätzliche Funktionen**: Weitere Tools für PDFs, wie Kommentarfunktionen oder PDF-Splitting.
-- **Mehrsprachigkeit**: Übersetzungen für andere Sprachen.
-- **Cloud-Unterstützung**: Dateien direkt in Cloud-Speichern wie Google Drive oder OneDrive bearbeiten.
+1. **Funktion aufrufen**: Wählen Sie `Konverter` auf der Startseite.  
+2. **Datei auswählen**:  
+   - Unterstützte Dateiformate: `.doc`, `.docx`, `.xls`, `.xlsx`, `.ppt`, `.pptx`, `.png`, `.jpg`, `.jpeg`.  
+   - Klicken Sie auf `Datei auswählen und konvertieren`, um eine Datei auszuwählen.  
+3. **Speichern**: Geben Sie den Speicherort und den Dateinamen für die PDF an.  
 
 ---
 
 ## Fehlerbehebung
 
-- **Fehler beim Konvertieren**: Stellen Sie sicher, dass Microsoft Office installiert ist, wenn Sie `.docx`, `.xls` oder `.pptx` konvertieren möchten.
-- **Fehler bei der Verschlüsselung**: Überprüfen Sie, ob die PDF-Datei gültig und nicht beschädigt ist.
-- **GUI-Probleme**: Stellen Sie sicher, dass alle benötigten Bilddateien im Ordner `Images` vorhanden sind.
+### Häufige Probleme und Lösungen
+
+1. **Fehler: `win32com.client` wird nicht gefunden**  
+   - Stellen Sie sicher, dass `pywin32` installiert ist:
+     ```bash
+     pip install pywin32
+     ```
+
+2. **Fehler: `Microsoft Word/Excel/PowerPoint konnte nicht gefunden werden`**  
+   - Überprüfen Sie, ob Microsoft Office auf Ihrem Computer installiert ist.  
+
+3. **PDF-Datei kann nicht geladen werden**  
+   - Stellen Sie sicher, dass die Datei nicht beschädigt ist und im `.pdf`-Format vorliegt.  
 
 ---
 
-## Lizenz
 
-Dieses Tool ist unter der **MIT-Lizenz** lizenziert. Sie dürfen den Code verwenden, modifizieren und verbreiten, solange die ursprünglichen Lizenzhinweise erhalten bleiben.
-```
+
+Das war's! Viel Spaß beim Nutzen deines PDF-Tools! 🚀
