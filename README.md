@@ -16,6 +16,8 @@
     - .xls, .xlsx to PDF
     - .ppt, .pptx to PDF
     - .png, .jpeg to PDF
+
+      
   New:
     - extract Text from PFD
     - Add Watermarks to PDF
