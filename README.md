@@ -20,7 +20,9 @@
   - Extract Text from PDF
   - Add Watermarks to PDF
 
-**Coming:**
+
+
+**Coming soon:**
   - Editing PDFs
   - Rotate PDF pages
   - Dark Mode
