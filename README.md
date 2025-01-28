@@ -18,12 +18,12 @@
     - .png, .jpeg to PDF
 
       
-  New:
+  *New:*
     - extract Text from PFD
     - Add Watermarks to PDF
 
       
-Coming:
+**Coming:**
 
 - editing PDFs
 - Rotate PDF pages
