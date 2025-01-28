@@ -25,4 +25,4 @@ Coming:
 
 ----------------------------------------------------
 
-**If u have Questions, read the `Wiki.md` File!**
+**If u have Questions, read the `Wiki.md` File or in the tab `Wiki`!**
