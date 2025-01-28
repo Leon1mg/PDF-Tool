@@ -16,8 +16,12 @@
     - .xls, .xlsx to PDF
     - .ppt, .pptx to PDF
     - .png, .jpeg to PDF
-    
-Coming:
+  New:
+    - extract Text from PFD
+    - Add Watermarks to PDF
+
+      
+*Coming:*
 
 - editing PDFs
 - Rotate PDF pages
