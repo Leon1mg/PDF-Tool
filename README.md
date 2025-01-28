@@ -19,7 +19,8 @@
 
       
   *New:*
-    - extract Text from PFD
+
+    - extract Text from PDF
     - Add Watermarks to PDF
 
       
