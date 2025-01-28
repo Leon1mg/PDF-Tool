@@ -28,7 +28,6 @@ def create_menuleiste(root):
 
     def about():
         messagebox.showinfo("Help", "You can find detailed instructions on Github at: \n Github.com/leon1mg/PDF-Tool")
-
     menubar = tk.Menu(root)
 
     file_menu = tk.Menu(menubar, tearoff=0)
@@ -526,7 +525,7 @@ def open_pdf_watermark():
                     watermark_text,
                     fontsize=50,
                     color=(0.7, 0.7, 0.7),
-                    render_mode=2
+                    render_mode=1
                 )
 
             doc.save(output_pdf)
