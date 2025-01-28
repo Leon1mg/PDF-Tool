@@ -24,4 +24,4 @@ Coming:
 - Dark Mode
 
 
-**If u habe Questions, read the `Wiki.mf` File!**
+**If u have Questions, read the `Wiki.mf` File!**
