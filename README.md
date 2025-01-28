@@ -21,7 +21,7 @@
     - Add Watermarks to PDF
 
       
-*Coming:*
+Coming:
 
 - editing PDFs
 - Rotate PDF pages
