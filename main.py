@@ -13,6 +13,7 @@ root = tk.Tk()
 root.title("PDF-Tool")
 root.state('zoomed')
 root.iconbitmap("Images/icon.ico")
+root.configure(bg='#4D4D4D')
 
 pdf_document = None
 current_page = 0
@@ -26,8 +27,12 @@ def create_menuleiste(root):
     def toggle_window_mode():
         root.attributes("-fullscreen", False)
 
-    def about():
+    def help():
         messagebox.showinfo("Help", "You can find detailed instructions on Github at: \n Github.com/leon1mg/PDF-Tool")
+
+    def version():
+        messagebox.showinfo("Version", "Version: \n Beta 0.9.3")
+
     menubar = tk.Menu(root)
 
     file_menu = tk.Menu(menubar, tearoff=0)
@@ -39,9 +44,10 @@ def create_menuleiste(root):
     view_menu.add_command(label="Window mode", command=toggle_window_mode)
     menubar.add_cascade(label="View", menu=view_menu)
 
-    help_menu = tk.Menu(menubar, tearoff=0)
-    help_menu.add_command(label="About", command=about)
-    menubar.add_cascade(label="Help", menu=help_menu)
+    about_menu = tk.Menu(menubar, tearoff=0)
+    about_menu.add_command(label="Help", command=help)
+    about_menu.add_command(label="Version", command=version)
+    menubar.add_cascade(label="About", menu=about_menu)
 
     root.config(menu=menubar)
 
@@ -52,9 +58,11 @@ def open_startpage():
 
     title_label = tk.Label(root, text="Willkommen im PDF-Tool!", font=("Arial", 65, "bold"), pady=50)
     title_label.pack(pady=60)
+    title_label.configure(bg='#4D4D4D', border=0)
 
     options_frame = tk.Frame(root)
     options_frame.pack(pady=150)
+    options_frame.configure(bg='#4D4D4D')
 
     img_merge = ImageTk.PhotoImage(Image.open("Images/kombinieren.png").resize((150, 220)))
     img_delete = ImageTk.PhotoImage(Image.open("Images/löschen.png").resize((150, 220)))
@@ -66,9 +74,11 @@ def open_startpage():
 
     merge_frame = tk.Frame(options_frame)
     merge_frame.pack(side=tk.LEFT, padx=20)
+    merge_frame.configure(bg='#4D4D4D')
 
     merge_image_label = tk.Label(merge_frame, image=img_merge)
     merge_image_label.image = img_merge
+    merge_image_label.configure(border=0)
     merge_image_label.pack()
 
     btn_merge = tk.Button(merge_frame, text="PDFs zusammenfügen", command=open_pdf_merge, width=20, font=("Arial", 14, "bold"))
@@ -77,9 +87,11 @@ def open_startpage():
 
     delete_frame = tk.Frame(options_frame)
     delete_frame.pack(side=tk.LEFT, padx=20)
+    delete_frame.configure(bg='#4D4D4D')
 
     delete_image_label = tk.Label(delete_frame, image=img_delete)
     delete_image_label.image = img_delete
+    delete_image_label.configure(border=0)
     delete_image_label.pack()
 
     btn_delete = tk.Button(delete_frame, text="PDF-Seiten löschen", command=open_pdf_delete_pages, width=20, font=("Arial", 14, "bold"))
@@ -88,9 +100,11 @@ def open_startpage():
 
     encrypt_frame = tk.Frame(options_frame)
     encrypt_frame.pack(side=tk.LEFT, padx=20)
+    encrypt_frame.configure(bg='#4D4D4D')
 
     encrypt_image_label = tk.Label(encrypt_frame, image=img_crypt)
     encrypt_image_label.image = img_crypt
+    encrypt_image_label.configure(border=0)
     encrypt_image_label.pack()
 
     btn_encrypt = tk.Button(encrypt_frame, text="PDF verschlüsseln", command=open_pdf_encrypt, width=20, font=("Arial", 14, "bold"))
@@ -99,9 +113,11 @@ def open_startpage():
 
     convert_frame = tk.Frame(options_frame)
     convert_frame.pack(side=tk.LEFT, padx=20)
+    convert_frame.configure(bg='#4D4D4D')
 
     convert_image_label = tk.Label(convert_frame, image=img_convert)
     convert_image_label.image = img_convert
+    convert_image_label.configure(border=0)
     convert_image_label.pack()
 
     btn_converter = tk.Button(convert_frame, text="Konverter", command=open_pdf_converter, width=20, font=("Arial", 14, "bold"))
@@ -109,9 +125,11 @@ def open_startpage():
 
     extract_frame = tk.Frame(options_frame)
     extract_frame.pack(side=tk.LEFT, padx=20)
+    extract_frame.configure(bg='#4D4D4D')
 
     extract_image_label = tk.Label(extract_frame, image=img_extract)
     extract_image_label.image = img_extract
+    extract_image_label.configure(border=0)
     extract_image_label.pack()
 
     btn_extract = tk.Button(extract_frame, text="Text extrahieren", command=open_pdf_extract_text, width=20, font=("Arial", 14, "bold"))
@@ -121,9 +139,11 @@ def open_startpage():
 
     watermark_frame = tk.Frame(options_frame)
     watermark_frame.pack(side=tk.LEFT, padx=20)
+    watermark_frame.configure(bg='#4D4D4D')
 
     watermark_image_label = tk.Label(watermark_frame, image=img_watermark)
     watermark_image_label.image = img_watermark
+    watermark_image_label.configure(border=0)
     watermark_image_label.pack()
 
     btn_watermark = tk.Button(watermark_frame, text="Wasserzeichen einfügen", command=open_pdf_watermark, width=20, font=("Arial", 14, "bold"))
