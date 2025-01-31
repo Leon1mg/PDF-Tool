@@ -83,6 +83,7 @@ def open_startpage():
 
     btn_merge = tk.Button(merge_frame, text="PDFs zusammenfügen", command=open_pdf_merge, width=20, font=("Arial", 14, "bold"))
     btn_merge.pack(pady=10)
+    btn_merge.configure(bg='#4D4D4D', fg='#F0F0F0')
 
 
     delete_frame = tk.Frame(options_frame)
@@ -96,6 +97,7 @@ def open_startpage():
 
     btn_delete = tk.Button(delete_frame, text="PDF-Seiten löschen", command=open_pdf_delete_pages, width=20, font=("Arial", 14, "bold"))
     btn_delete.pack(pady=10)
+    btn_delete.configure(bg='#4D4D4D', fg='#F0F0F0')
 
 
     encrypt_frame = tk.Frame(options_frame)
@@ -109,6 +111,7 @@ def open_startpage():
 
     btn_encrypt = tk.Button(encrypt_frame, text="PDF verschlüsseln", command=open_pdf_encrypt, width=20, font=("Arial", 14, "bold"))
     btn_encrypt.pack(pady=10)
+    btn_encrypt.configure(bg='#4D4D4D', fg='#F0F0F0')
 
 
     convert_frame = tk.Frame(options_frame)
@@ -122,6 +125,7 @@ def open_startpage():
 
     btn_converter = tk.Button(convert_frame, text="Konverter", command=open_pdf_converter, width=20, font=("Arial", 14, "bold"))
     btn_converter.pack(pady=10)
+    btn_converter.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     extract_frame = tk.Frame(options_frame)
     extract_frame.pack(side=tk.LEFT, padx=20)
@@ -134,6 +138,7 @@ def open_startpage():
 
     btn_extract = tk.Button(extract_frame, text="Text extrahieren", command=open_pdf_extract_text, width=20, font=("Arial", 14, "bold"))
     btn_extract.pack(pady=10)
+    btn_extract.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     create_menuleiste(root)
 
@@ -148,6 +153,7 @@ def open_startpage():
 
     btn_watermark = tk.Button(watermark_frame, text="Wasserzeichen einfügen", command=open_pdf_watermark, width=20, font=("Arial", 14, "bold"))
     btn_watermark.pack(pady=10)
+    btn_watermark.configure(bg='#4D4D4D', fg='#F0F0F0')
 
 
 def open_pdf_merge():
@@ -190,8 +196,9 @@ def open_pdf_merge():
         pdf_files.clear()
         update_file_list()
 
-    back_btn = tk.Button(root, text="Zurück zur Startseite", command=open_startpage)
-    back_btn.pack(pady=10)
+    back_merge_btn = tk.Button(root, text="Zurück zur Startseite", command=open_startpage)
+    back_merge_btn.pack(pady=10)
+    back_merge_btn.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     frame = tk.Frame(root)
     frame.pack(pady=10)
@@ -206,12 +213,15 @@ def open_pdf_merge():
 
     btn_add = tk.Button(root, text="PDFs hinzufügen", command=add_files)
     btn_add.pack(pady=5)
+    btn_add.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     btn_merge = tk.Button(root, text="PDFs zusammenfügen", command=merge_pdfs)
     btn_merge.pack(pady=5)
+    btn_merge.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     btn_clear = tk.Button(root, text="Liste leeren", command=clear_files)
     btn_clear.pack(pady=5)
+    btn_clear.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     create_menuleiste(root)
 def open_pdf_delete_pages():
@@ -282,11 +292,13 @@ def open_pdf_delete_pages():
 
     pages_label = tk.Label(root, text="Zu löschende Seiten (z. B. 1,3,5):")
     pages_label.pack(pady=5)
+    pages_label.configure(bg='#4D4D4D', fg='#F0F0F0')
     pages_entry = tk.Entry(root, width=30)
     pages_entry.pack(pady=5)
 
     delete_btn = tk.Button(root, text="Seiten löschen und speichern", command=delete_pages)
     delete_btn.pack(pady=10)
+    delete_btn.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     canvas_frame = tk.Frame(root)
     canvas_frame.pack(pady=10)
@@ -312,12 +324,15 @@ def open_pdf_delete_pages():
 
     nav_frame = tk.Frame(root)
     nav_frame.pack(pady=10)
+    nav_frame.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     prev_button = tk.Button(nav_frame, text="Zurück", command=prev_page)
     prev_button.pack(side=tk.LEFT, padx=10)
+    prev_button.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     next_button = tk.Button(nav_frame, text="Weiter", command=next_page)
     next_button.pack(side=tk.LEFT, padx=10)
+    next_button.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     create_menuleiste(root)
 
@@ -391,19 +406,23 @@ def open_pdf_encrypt():
     # UI
     tk.Button(root, text="Zurück zur Startseite", command=open_startpage).pack(pady=10)
 
-    instructions = tk.Label(root, text="Wählen Sie eine PDF aus, um sie zu verschlüsseln oder zu entschlüsseln.", font=("Arial", 14))
-    instructions.pack(pady=20)
+    instructions_decrypt = tk.Label(root, text="Wählen Sie eine PDF aus, um sie zu verschlüsseln oder zu entschlüsseln.", font=("Arial", 14))
+    instructions_decrypt.pack(pady=20)
+    instructions_decrypt.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     password_label = tk.Label(root, text="Passwort:")
     password_label.pack(pady=5)
+    password_label.configure(bg='#4D4D4D', fg='#F0F0F0')
     password_entry = tk.Entry(root, width=30, show="*")
     password_entry.pack(pady=5)
 
     encrypt_btn = tk.Button(root, text="PDF verschlüsseln", command=encrypt_pdf)
     encrypt_btn.pack(pady=10)
+    encrypt_btn.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     decrypt_btn = tk.Button(root, text="PDF entschlüsseln", command=decrypt_pdf)
     decrypt_btn.pack(pady=10)
+    decrypt_btn.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     create_menuleiste(root)
 
@@ -458,17 +477,21 @@ def open_pdf_converter():
         except Exception as e:
             messagebox.showerror("Fehler", f"Ein Fehler ist aufgetreten: {e}")
 
-    back_btn = tk.Button(root, text="Zurück zur Startseite", command=open_startpage)
-    back_btn.pack(pady=10)
+    back_convert_btn = tk.Button(root, text="Zurück zur Startseite", command=open_startpage)
+    back_convert_btn.pack(pady=10)
+    back_convert_btn.configure(bg='#4D4D4D', fg='#F0F0F0')
 
-    instructions = tk.Label(root, text="Wählen Sie eine Datei, um sie in PDF zu konvertieren.", font=("Arial", 14))
-    instructions.pack(pady=20)
-    instructions = tk.Label(root, text="Zur Auswahl stehen: doc, docx, xls, xlsx, ppt, pptx, png, jpg, jpeg --> PDF", font=("Arial", 14))
-    instructions.pack(pady=20)
+    instructions_convert = tk.Label(root, text="Wählen Sie eine Datei, um sie in PDF zu konvertieren.", font=("Arial", 14))
+    instructions_convert.pack(pady=20)
+    instructions_convert.configure(bg='#4D4D4D', fg='#F0F0F0')
+    instructions_convert2 = tk.Label(root, text="Zur Auswahl stehen: doc, docx, xls, xlsx, ppt, pptx, png, jpg, jpeg --> PDF", font=("Arial", 14))
+    instructions_convert2.pack(pady=20)
+    instructions_convert2.configure(bg='#4D4D4D', fg='#F0F0F0')
 
 
     convert_btn = tk.Button(root, text="Datei auswählen und konvertieren", command=convert_file, font=("Arial", 12))
     convert_btn.pack(pady=10)
+    convert_btn.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     create_menuleiste(root)
 
@@ -494,20 +517,24 @@ def open_pdf_extract_text():
         except Exception as e:
             messagebox.showerror("Fehler", f"Ein Fehler ist aufgetreten: {e}")
 
-    back_btn = tk.Button(root, text="Zurück zur Startseite", command=open_startpage)
-    back_btn.pack(pady=10)
+    back_extract_btn = tk.Button(root, text="Zurück zur Startseite", command=open_startpage)
+    back_extract_btn.pack(pady=10)
+    back_extract_btn.configure(bg='#4D4D4D', fg='#F0F0F0')
 
-    instructions = tk.Label(root, text="Wählen Sie eine PDF aus, um den Text zu extrahieren.", font=("Arial", 14))
-    instructions.pack(pady=20)
+    instructions_extract = tk.Label(root, text="Wählen Sie eine PDF aus, um den Text zu extrahieren.", font=("Arial", 14))
+    instructions_extract.pack(pady=20)
+    instructions_extract.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     extract_btn = tk.Button(root, text="Text extrahieren", command=extract_text)
     extract_btn.pack(pady=10)
+    extract_btn.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     text_area_frame = tk.Frame(root)
     text_area_frame.pack(pady=10)
 
     text_area = tk.Text(text_area_frame, width=100, height=20)
     text_area.pack(side=tk.LEFT)
+
 
     scrollbar = tk.Scrollbar(text_area_frame, orient=tk.VERTICAL, command=text_area.yview)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -553,24 +580,26 @@ def open_pdf_watermark():
         except Exception as e:
             messagebox.showerror("Fehler", f"Fehler beim Hinzufügen des Wasserzeichens: {e}")
 
-    back_btn = tk.Button(root, text="Zurück zur Startseite", command=open_startpage)
-    back_btn.pack(pady=10)
+    back_watermark_btn = tk.Button(root, text="Zurück zur Startseite", command=open_startpage)
+    back_watermark_btn.pack(pady=10)
+    back_watermark_btn.configure(bg='#4D4D4D', fg='#F0F0F0')
 
-    instructions = tk.Label(root, text="Geben Sie ein Wasserzeichen ein und fügen Sie es der PDF hinzu.", font=("Arial", 14))
-    instructions.pack(pady=20)
+    instructions_watermark = tk.Label(root, text="Geben Sie ein Wasserzeichen ein und fügen Sie es der PDF hinzu.", font=("Arial", 14))
+    instructions_watermark.pack(pady=20)
+    instructions_watermark.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     watermark_text_label = tk.Label(root, text="Wasserzeichen-Text:")
     watermark_text_label.pack(pady=5)
+    watermark_text_label.configure(bg='#4D4D4D', fg='#F0F0F0')
 
     watermark_text_entry = tk.Entry(root, width=40)
     watermark_text_entry.pack(pady=5)
 
     add_watermark_btn = tk.Button(root, text="Wasserzeichen hinzufügen", command=add_watermark)
     add_watermark_btn.pack(pady=10)
-
+    add_watermark_btn.configure(bg='#4D4D4D', fg='#F0F0F0')
     create_menuleiste(root)
 
 
 open_startpage()
 root.mainloop()
-
